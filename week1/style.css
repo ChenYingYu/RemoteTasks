@@ -103,6 +103,24 @@ ul {
 }
 
 @media (min-width: 361px) {
+  .nav-links {
+    /* position and size */
+    position: fixed;
+    margin-top: 0;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 150px;
+    z-index: 1000;
+    padding: 10px 0 0 0;
+
+    /* layout */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+  }
+
   .container {
     width: 90%;
   }
@@ -125,6 +143,16 @@ ul {
 }
 
 @media (min-width: 601px) {
+  .nav-links {
+    position: static;
+    height: auto;
+    width: auto;
+
+    display: flex;
+    flex-direction: row;
+    z-index: auto;
+  }
+
   .container {
     width: 90%;
   }
