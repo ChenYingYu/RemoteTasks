@@ -10,13 +10,23 @@
     <div class="header-title">My Website</div>
 
     <nav>
+      <button class="burger-icon" onclick="toggleMenu()">&#9776</button>
       <ul class="nav-links">
+        <button class="close-icon" onclick="toggleMenu();">&times;</button>
         <li>Item 1</li>
         <li>Item 2</li>
         <li>Item 3</li>
         <li>Item 4</li>
       </ul>
     </nav>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector(".nav-links");
+            navLinks.classList.toggle("open");
+            console.log(navLinks);
+        }
+    </script>
   </header>
   <body>
     <div class="title">Welcome to MyHome</div>
