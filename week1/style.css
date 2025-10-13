@@ -1,0 +1,50 @@
+:root {
+  --theme-color: rgb(223, 235, 244);
+  --padding: 20px;
+  --gap: 20px;
+}
+
+* {
+  text-align: center;
+  font-size: 20px;
+  align-items: center;
+  font-family: "Times New Roman", Times, serif;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+header {
+  display: flex;
+  padding-left: var(--padding);
+  padding-right: var(--padding);
+}
+
+.header-title {
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+}
+
+ul {
+  display: flex;
+  gap: var(--gap);
+  list-style-type: none;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: var(--theme-color);
+  height: 250px;
+  display: flex;
+  justify-content: center;
+}
+
+
