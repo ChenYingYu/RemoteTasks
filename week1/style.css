@@ -71,17 +71,24 @@ ul {
 
 .content {
   position: relative;
-  width: 160px;
-  height: 100px;
+  height: 200px;
+  width: 100%;
   background-image: url("./utils/landscape.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: center center;
+}
+
+.content-grid {
+  margin-top: var(--padding);
+  display: grid;
+  gap: var(--gap);
 }
 
 .star-icon {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  font-size: 1.5rem;
+  top: 10px;
+  right: 10px;
   font-style: normal;
 }
 
@@ -111,6 +118,10 @@ ul {
   .promotion3 {
     width: 100%;
   }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (min-width: 601px) {
@@ -130,6 +141,15 @@ ul {
 
   .promotion3 {
     width: 100%;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .content:nth-child(9),
+  .content:nth-child(10) {
+    grid-column: span 2;
   }
 }
 
@@ -151,5 +171,25 @@ ul {
   .promotion3 {
     flex-grow: 1;
     flex-basis: 0;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .content:nth-child(1),
+  .content:nth-child(6) {
+    grid-column: span 2;
+  }
+
+  .content:nth-child(2),
+  .content:nth-child(3),
+  .content:nth-child(4),
+  .content:nth-child(5),
+  .content:nth-child(7),
+  .content:nth-child(8),
+  .content:nth-child(9),
+  .content:nth-child(10) {
+    grid-column: span 1;
   }
 }
