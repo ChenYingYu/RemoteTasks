@@ -120,10 +120,12 @@ ul {
 
   .promotion1 {
     flex-grow: 1;
+    flex-basis: 0;
   }
 
   .promotion2 {
     flex-grow: 1;
+    flex-basis: 0;
   }
 
   .promotion3 {
