@@ -79,6 +79,7 @@ ul {
 .promotion {
   display: flex;
   background-color: var(--theme-color);
+  gap: 10px;
   margin: 10px;
 }
 
