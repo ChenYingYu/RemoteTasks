@@ -1,3 +1,7 @@
+## Task 1
+print("=== Task 1 ===")
+
+
 def func1(name):
     # data
     class Person:
@@ -67,3 +71,28 @@ func1("悟空")  # print 最遠丁滿、弗利沙；最近特南克斯
 func1("弗利沙")  # print 最遠辛巴，最近特南克斯
 func1("特南克斯")  # print 最遠丁滿，最近悟空
 
+
+## Task 3
+print("=== Task 3 ===")
+
+def func3(index):
+    # start: 25
+    # rule: -2, -3, +1, +2, repeat
+    # your code here
+    start = 25
+    remain = index // 4
+    mod = index % 4
+    y = 0
+    if mod == 1:
+        y = -2
+    elif mod == 2:
+        y = -5
+    elif mod == 3:
+        y = -4
+    print(25 + (remain * (-2)) + y)
+
+
+func3(1)  # print 23
+func3(5)  # print 21
+func3(10)  # print 16
+func3(30)  # print 6
