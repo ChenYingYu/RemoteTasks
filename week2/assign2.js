@@ -108,3 +108,55 @@ func3(1); // print 23
 func3(5); // print 21
 func3(10); // print 16
 func3(30); // print 6
+
+// Task 4
+console.log("=== Task 4 ===");
+
+function func4(sp, stat, n) {
+  //  rule: fit people into a car
+  const statArr = stat.split("");
+
+  let minAvailable = null;
+  let maxAvailable = null;
+  let minAvailableIndex = null;
+  let maxAvailableIndex = null;
+
+  for (let index in statArr) {
+    if (stat[index] == "1") {
+      continue; // skip this car since 1 means not available
+    }
+    if (sp[index] == n) {
+      console.log(index); // perfect match, end the process
+      return;
+    } else if (sp[index] > n) {
+      if (maxAvailable === null) {
+        maxAvailable = sp[index];
+        maxAvailableIndex = index;
+      } else if (sp[index] < maxAvailable) {
+        maxAvailable = sp[index];
+        maxAvailableIndex = index;
+      }
+    } else if (sp[index] < n) {
+      if (minAvailable === null) {
+        minAvailable = sp[index];
+        minAvailableIndex = index;
+      } else if (sp[index] > minAvailable) {
+        minAvailable = sp[index];
+        minAvailableIndex = index;
+      }
+    }
+  }
+
+  // Answer
+  if (maxAvailableIndex !== null) {
+    console.log(maxAvailableIndex);
+  } else if (minAvailableIndex !== null) {
+    console.log(minAvailableIndex);
+  } else {
+    console.log("Error");
+  }
+}
+
+func4([3, 1, 5, 4, 3, 2], "101000", 2); // print 5
+func4([1, 0, 5, 1, 3], "10100", 4); // print 4
+func4([4, 6, 5, 8], "1000", 4); // print 2
