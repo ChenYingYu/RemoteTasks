@@ -149,36 +149,47 @@ func4([4, 6, 5, 8], "1000", 4)  # print 2
 print("=== Task 2 ===")
 
 
-# we'll handle slot conflict later
+available_slot = {"S1": set(), "S2": set(), "S3": set()}
+available_services = []
 
 
 def func2(ss, start, end, criteria):
+    global available_services
+    time_slot = set(range(start, end))
+    available_services = check_availability(time_slot)
     # check what kind of criteria
     str_arr = str(criteria).split("=")
     str_prefix = str_arr[0]
     str_postfix = str_arr[1]
+    target_service = ""
+
     if str_prefix[0] == "r":
         # do rating logic
         condition = str_prefix[-1]
         rating_criteria = float(str_postfix)
         if condition == "<":
-            find_max_rating_below(rating_criteria)
+            target_service = find_max_rating_below(rating_criteria)
         elif condition == ">":
-            find_min_rating_above(rating_criteria)
+            target_service = find_min_rating_above(rating_criteria)
 
     elif criteria[0] == "c":
         # do cost logic
         condition = str_prefix[-1]
         cost_criteria = float(str_postfix)
         if condition == "<":
-            find_max_cost_below(cost_criteria)
+            target_service = find_max_cost_below(cost_criteria)
         elif condition == ">":
-            find_min_cost_above(cost_criteria)
+            target_service = find_min_cost_above(cost_criteria)
 
     elif criteria[0] == "n":
         # do name logic
         name = str_postfix
-        find_service(name)
+        target_service = find_service(name)
+
+    if target_service != "Sorry":
+        book(target_service, time_slot)
+    else:
+        print("Sorry")
 
 
 def find_max_rating_below(rating_criteria):
@@ -186,6 +197,8 @@ def find_max_rating_below(rating_criteria):
     max_rating = None
 
     for service in services:
+        if service["name"] not in available_services:
+            continue
         rating = float(service["r"])
         if rating <= rating_criteria:
             if max_rating is None:
@@ -195,7 +208,7 @@ def find_max_rating_below(rating_criteria):
                 max_rating = rating
                 target_service = service["name"]
 
-    print(target_service)
+    return target_service
 
 
 def find_min_rating_above(rating_criteria):
@@ -203,6 +216,8 @@ def find_min_rating_above(rating_criteria):
     min_rating = None
 
     for service in services:
+        if service["name"] not in available_services:
+            continue
         rating = float(service["r"])
         if rating >= rating_criteria:
             if min_rating is None:
@@ -212,7 +227,7 @@ def find_min_rating_above(rating_criteria):
                 min_rating = rating
                 target_service = service["name"]
 
-    print(target_service)
+    return target_service
 
 
 def find_max_cost_below(cost_criteria):
@@ -220,6 +235,8 @@ def find_max_cost_below(cost_criteria):
     max_cost = None
 
     for service in services:
+        if service["name"] not in available_services:
+            continue
         cost = float(service["c"])
         if cost <= cost_criteria:
             if max_cost is None:
@@ -229,7 +246,7 @@ def find_max_cost_below(cost_criteria):
                 max_cost = cost
                 target_service = service["name"]
 
-    print(target_service)
+    return target_service
 
 
 def find_min_cost_above(cost_criteria):
@@ -237,6 +254,8 @@ def find_min_cost_above(cost_criteria):
     min_cost = None
 
     for service in services:
+        if service["name"] not in available_services:
+            continue
         cost = float(service["c"])
         if cost >= cost_criteria:
             if min_cost is None:
@@ -246,17 +265,35 @@ def find_min_cost_above(cost_criteria):
                 min_cost = cost
                 target_service = service["name"]
 
-    print(target_service)
+    return target_service
 
 
 def find_service(name):
     target_service = "Sorry"  # default none
     for service in services:
+        if service["name"] not in available_services:
+            continue
         if name == service["name"]:
             target_service = service["name"]
             print(target_service)
             return
-    print(target_service)
+
+    return target_service
+
+
+def check_availability(time_slot):
+    available_services = []
+    for service in available_slot:
+        if (time_slot & available_slot[service]) == set():
+            available_services.append(service)
+            # print("append")
+            # print(f"available_services {available_services}")
+    return available_services
+
+
+def book(service, time_slot):
+    available_slot[service] |= time_slot
+    print(service)
 
 
 services = [
