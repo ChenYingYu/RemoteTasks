@@ -1,4 +1,4 @@
-## Task 1
+"""## Task 1
 print("=== Task 1 ===")
 
 
@@ -143,3 +143,132 @@ def func4(sp, stat, n):
 func4([3, 1, 5, 4, 3, 2], "101000", 2)  # print 5
 func4([1, 0, 5, 1, 3], "10100", 4)  # print 4
 func4([4, 6, 5, 8], "1000", 4)  # print 2
+"""
+
+## Task 2
+print("=== Task 2 ===")
+
+
+# we'll handle slot conflict later
+
+
+def func2(ss, start, end, criteria):
+    # check what kind of criteria
+    str_arr = str(criteria).split("=")
+    str_prefix = str_arr[0]
+    str_postfix = str_arr[1]
+    if str_prefix[0] == "r":
+        # do rating logic
+        condition = str_prefix[-1]
+        rating_criteria = float(str_postfix)
+        if condition == "<":
+            find_max_rating_below(rating_criteria)
+        elif condition == ">":
+            find_min_rating_above(rating_criteria)
+
+    elif criteria[0] == "c":
+        # do cost logic
+        condition = str_prefix[-1]
+        cost_criteria = float(str_postfix)
+        if condition == "<":
+            find_max_cost_below(cost_criteria)
+        elif condition == ">":
+            find_min_cost_above(cost_criteria)
+
+    elif criteria[0] == "n":
+        # do name logic
+        name = str_postfix
+        find_service(name)
+
+
+def find_max_rating_below(rating_criteria):
+    target_service = "Sorry"  # default none
+    max_rating = None
+
+    for service in services:
+        rating = float(service["r"])
+        if rating <= rating_criteria:
+            if max_rating is None:
+                max_rating = rating
+                target_service = service["name"]
+            elif rating > max_rating:
+                max_rating = rating
+                target_service = service["name"]
+
+    print(target_service)
+
+
+def find_min_rating_above(rating_criteria):
+    target_service = "Sorry"  # default none
+    min_rating = None
+
+    for service in services:
+        rating = float(service["r"])
+        if rating >= rating_criteria:
+            if min_rating is None:
+                min_rating = rating
+                target_service = service["name"]
+            elif rating < min_rating:
+                min_rating = rating
+                target_service = service["name"]
+
+    print(target_service)
+
+
+def find_max_cost_below(cost_criteria):
+    target_service = "Sorry"  # default none
+    max_cost = None
+
+    for service in services:
+        cost = float(service["c"])
+        if cost <= cost_criteria:
+            if max_cost is None:
+                max_cost = cost
+                target_service = service["name"]
+            elif cost > max_cost:
+                max_cost = cost
+                target_service = service["name"]
+
+    print(target_service)
+
+
+def find_min_cost_above(cost_criteria):
+    target_service = "Sorry"  # default none
+    min_cost = None
+
+    for service in services:
+        cost = float(service["c"])
+        if cost >= cost_criteria:
+            if min_cost is None:
+                min_cost = cost
+                target_service = service["name"]
+            elif cost < min_cost:
+                min_cost = cost
+                target_service = service["name"]
+
+    print(target_service)
+
+
+def find_service(name):
+    target_service = "Sorry"  # default none
+    for service in services:
+        if name == service["name"]:
+            target_service = service["name"]
+            print(target_service)
+            return
+    print(target_service)
+
+
+services = [
+    {"name": "S1", "r": 4.5, "c": 1000},
+    {"name": "S2", "r": 3, "c": 1200},
+    {"name": "S3", "r": 3.8, "c": 800},
+]
+
+func2(services, 15, 17, "c>=800")  # S3
+func2(services, 11, 13, "r<=4")  # S3
+func2(services, 10, 12, "name=S3")  # Sorry
+func2(services, 15, 18, "r>=4.5")  # S1
+func2(services, 16, 18, "r>=4")  # Sorry
+func2(services, 13, 17, "name=S1")  # Sorry
+func2(services, 8, 9, "c<=1500")  # S2
