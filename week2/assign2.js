@@ -77,3 +77,34 @@ func1("辛巴"); // print 最遠弗利沙；最近丁滿、貝吉塔
 func1("悟空"); // print 最遠丁滿、弗利沙；最近特南克斯
 func1("弗利沙"); // print 最遠辛巴，最近特南克斯
 func1("特南克斯"); // print 最遠丁滿，最近悟空
+
+// Task 3
+console.log("=== Task 3 ===");
+
+function func3(index) {
+  // start: 25
+  // rule: -2, -3, +1, +2, repeat
+  // your code here
+  const start = 25;
+  const remain = Math.floor(index / 4);
+  const mod = index % 4;
+  let y = 0;
+  switch (mod) {
+    case 1:
+      y = -2;
+      break;
+    case 2:
+      y = -5;
+      break;
+    case 3:
+      y = -4;
+      break;
+  }
+
+  console.log(start + remain * -2 + y);
+}
+
+func3(1); // print 23
+func3(5); // print 21
+func3(10); // print 16
+func3(30); // print 6
