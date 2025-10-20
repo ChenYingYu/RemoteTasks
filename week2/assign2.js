@@ -78,6 +78,202 @@ func1("悟空"); // print 最遠丁滿、弗利沙；最近特南克斯
 func1("弗利沙"); // print 最遠辛巴，最近特南克斯
 func1("特南克斯"); // print 最遠丁滿，最近悟空
 
+// Task 2
+console.log("=== Task 2 ===");
+
+let availableSlot = new Map([
+  ["S1", new Set()],
+  ["S2", new Set()],
+  ["S3", new Set()],
+]);
+let availableServices = [];
+
+function func2(ss, start, end, criteria) {
+  const timeSlot = new Set(
+    Array.from({ length: end - start }, (_, index) => start + index)
+  );
+  availableServices = checkAvailability(timeSlot);
+  // check what kind of criteria
+
+  const strArr = criteria.split("=");
+  const strPrefix = strArr[0];
+  const strPostfix = strArr[1];
+  let targetService = "";
+
+  if (strPrefix[0] == "r") {
+    // do rating logic
+    const condition = strPrefix.at(-1);
+    const ratingCriteria = strPostfix;
+    if (condition == "<") {
+      targetService = findMaxRatingBelow(ratingCriteria);
+    } else if (condition == ">") {
+      targetService = findMinRatingAbove(ratingCriteria);
+    }
+  } else if (strPrefix[0] == "c") {
+    // do cost logic
+    const condition = strPrefix.at(-1);
+    const costCriteria = strPostfix;
+    if (condition == "<") {
+      targetService = findMaxCostBelow(costCriteria);
+    } else if (condition == ">") {
+      targetService = findMinCostAbove(costCriteria);
+    }
+  } else if (criteria[0] == "n") {
+    // do name logic
+    const name = strPostfix;
+    targetService = findService(name);
+  }
+
+  if (targetService != "Sorry") {
+    book(targetService, timeSlot);
+  } else {
+    console.log("Sorry");
+  }
+}
+
+function findMaxRatingBelow(ratingCriteria) {
+  targetService = "Sorry"; // default none
+  let maxRating = null;
+
+  for (const service of services) {
+    if (!availableServices.includes(service["name"])) {
+      continue;
+    }
+    const rating = service["r"];
+    if (rating <= ratingCriteria) {
+      if (maxRating === null) {
+        maxRating = rating;
+        targetService = service["name"];
+      } else if (rating > maxRating) {
+        maxRating = rating;
+        targetService = service["name"];
+      }
+    }
+  }
+
+  return targetService;
+}
+
+function findMinRatingAbove(ratingCriteria) {
+  targetService = "Sorry"; // default none
+  let minRating = null;
+
+  for (const service of services) {
+    if (!availableServices.includes(service["name"])) {
+      continue;
+    }
+    const rating = service["r"];
+    if (rating >= ratingCriteria) {
+      if (minRating === null) {
+        minRating = rating;
+        targetService = service["name"];
+      } else if (rating < minRating) {
+        minRating = rating;
+        targetService = service["name"];
+      }
+    }
+  }
+
+  return targetService;
+}
+
+function findMaxCostBelow(ratingCriteria) {
+  targetService = "Sorry"; // default none
+  let maxCost = null;
+
+  for (const service of services) {
+    if (!availableServices.includes(service["name"])) {
+      continue;
+    }
+    const cost = service["c"];
+    if (cost <= ratingCriteria) {
+      if (maxCost === null) {
+        maxCost = cost;
+        targetService = service["name"];
+      } else if (cost > maxCost) {
+        maxCost = cost;
+        targetService = service["name"];
+      }
+    }
+  }
+
+  return targetService;
+}
+
+function findMinCostAbove(ratingCriteria) {
+  targetService = "Sorry"; // default none
+  let minCost = null;
+
+  for (const service of services) {
+    if (!availableServices.includes(service["name"])) {
+      continue;
+    }
+    const cost = service["c"];
+    if (cost >= ratingCriteria) {
+      if (minCost === null) {
+        minCost = cost;
+        targetService = service["name"];
+      } else if (cost < minCost) {
+        minCost = cost;
+        targetService = service["name"];
+      }
+    }
+  }
+
+  return targetService;
+}
+
+function findService(name) {
+  targetService = "Sorry"; // default none
+  for (const service in services) {
+    if (!availableServices.includes(service["name"])) {
+      continue;
+    }
+    if (name == service["name"]) {
+      targetService = service["name"];
+      return targetService;
+    }
+  }
+
+  return targetService;
+}
+
+function checkAvailability(timeSlot) {
+  availableServices = [];
+  for (const [service, set] of availableSlot) {
+    const isDisjoint = (set1, set2) =>
+      [...set1].every((item) => !set2.has(item));
+
+    if (isDisjoint(timeSlot, set)) {
+      availableServices.push(service);
+    }
+  }
+
+  return availableServices;
+}
+
+function book(service, timeSlot) {
+  availableSlot.set(
+    service,
+    new Set([...availableSlot.get(service), ...timeSlot])
+  );
+  console.log(service);
+}
+
+const services = [
+  { name: "S1", r: 4.5, c: 1000 },
+  { name: "S2", r: 3, c: 1200 },
+  { name: "S3", r: 3.8, c: 800 },
+];
+
+func2(services, 15, 17, "c>=800"); // S3
+func2(services, 11, 13, "r<=4"); // S3
+func2(services, 10, 12, "name=S3"); // Sorry
+func2(services, 15, 18, "r>=4.5"); // S1
+func2(services, 16, 18, "r>=4"); // Sorry
+func2(services, 13, 17, "name=S1"); // Sorry
+func2(services, 8, 9, "c<=1500"); // S2
+
 // Task 3
 console.log("=== Task 3 ===");
 
