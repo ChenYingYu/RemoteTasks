@@ -75,6 +75,7 @@ func1("特南克斯")  # print 最遠丁滿，最近悟空
 ## Task 3
 print("=== Task 3 ===")
 
+
 def func3(index):
     # start: 25
     # rule: -2, -3, +1, +2, repeat
@@ -96,3 +97,49 @@ func3(1)  # print 23
 func3(5)  # print 21
 func3(10)  # print 16
 func3(30)  # print 6
+
+## Task 4
+print("=== Task 4 ===")
+
+
+def func4(sp, stat, n):
+    # rule: fit people into a car
+    stat_arr = str(stat).split
+
+    min_available = None
+    max_available = None
+    min_available_index = None
+    max_available_index = None
+    for index, char in enumerate(stat):
+        if char == "1":
+            continue  # skip this car since 1 means not available
+        if sp[index] == n:  # perfect match, end the process
+            print(index)
+            return
+        elif sp[index] > n:
+            if max_available is None:
+                max_available = sp[index]
+                max_available_index = index
+            elif sp[index] < max_available:
+                max_available = sp[index]
+                max_available_index = index
+        elif sp[index] < n:
+            if min_available is None:
+                min_available = sp[index]
+                min_available_index = index
+            elif sp[index] > min_available:
+                min_available = sp[index]
+                min_available_index = index
+
+    # Answer
+    if max_available_index is not None:
+        print(max_available_index)
+    elif min_available_index is not None:
+        print(min_available_index)
+    else:
+        print("Error")
+
+
+func4([3, 1, 5, 4, 3, 2], "101000", 2)  # print 5
+func4([1, 0, 5, 1, 3], "10100", 4)  # print 4
+func4([4, 6, 5, 8], "1000", 4)  # print 2
