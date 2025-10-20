@@ -12,9 +12,7 @@ def func1(name):
             self.y = y
 
         def get_distance(self, other_point):
-            return (
-                (self.x - other_point.x) ** 2 + (self.y - other_point.y) ** 2
-            ) ** 0.5
+            return abs(self.x - other_point.x) + abs(self.y - other_point.y)
 
     data = [
         Person("悟空", 0, Point(0, 0)),
