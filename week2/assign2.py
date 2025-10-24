@@ -280,7 +280,7 @@ def func4(sp, stat, n):
         if char == "1":
             continue  # skip this car since 1 means not available
         if sp[index] == n:  # perfect match, end the process
-            print(index)
+            return index
             return
         elif sp[index] > n:
             if max_available is None:
@@ -299,13 +299,13 @@ def func4(sp, stat, n):
 
     # Answer
     if max_available_index is not None:
-        print(max_available_index)
+        return max_available_index
     elif min_available_index is not None:
-        print(min_available_index)
+        return min_available_index
     else:
-        print("Error")
+        return "Error"
 
 
-func4([3, 1, 5, 4, 3, 2], "101000", 2)  # print 5
-func4([1, 0, 5, 1, 3], "10100", 4)  # print 4
-func4([4, 6, 5, 8], "1000", 4)  # print 2
+print(func4([3, 1, 5, 4, 3, 2], "101000", 2))  # print 5
+print(func4([1, 0, 5, 1, 3], "10100", 4))  # print 4
+print(func4([4, 6, 5, 8], "1000", 4))  # print 2
