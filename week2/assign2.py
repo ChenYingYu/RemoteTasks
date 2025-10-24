@@ -256,13 +256,13 @@ def func3(index):
         y = -5
     elif mod == 3:
         y = -4
-    print(25 + (remain * (-2)) + y)
+    return 25 + (remain * (-2)) + y
 
 
-func3(1)  # print 23
-func3(5)  # print 21
-func3(10)  # print 16
-func3(30)  # print 6
+print(func3(1))  # print 23
+print(func3(5))  # print 21
+print(func3(10))  # print 16
+print(func3(30))  # print 6
 
 ## Task 4
 print("=== Task 4 ===")
