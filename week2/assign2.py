@@ -270,7 +270,10 @@ print("=== Task 4 ===")
 
 def func4(sp, stat, n):
     # rule: fit people into a car
-    stat_arr = str(stat).split
+    if len(sp) != len(stat):
+        raise ValueError("Input 'sp' list and 'stat' string must have the same length.")
+
+    stat_arr = str(stat).split()
 
     min_available = None
     max_available = None
