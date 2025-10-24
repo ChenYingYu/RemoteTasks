@@ -114,9 +114,9 @@ def func2(ss, start, end, criteria):
         target_service = find_service(name)
 
     if target_service != "Sorry":
-        book(target_service, time_slot)
+        return book(target_service, time_slot)
     else:
-        print("Sorry")
+        return "Sorry"
 
 
 def find_max_rating_below(rating_criteria):
@@ -202,8 +202,7 @@ def find_service(name):
             continue
         if name == service["name"]:
             target_service = service["name"]
-            print(target_service)
-            return
+            return target_service
 
     return target_service
 
@@ -220,7 +219,7 @@ def check_availability(time_slot):
 
 def book(service, time_slot):
     available_slot[service] |= time_slot
-    print(service)
+    return service
 
 
 services = [
@@ -229,14 +228,17 @@ services = [
     {"name": "S3", "r": 3.8, "c": 800},
 ]
 
-func2(services, 15, 17, "c>=800")  # S3
-func2(services, 11, 13, "r<=4")  # S3
-func2(services, 10, 12, "name=S3")  # Sorry
-func2(services, 15, 18, "r>=4.5")  # S1
-func2(services, 16, 18, "r>=4")  # Sorry
-func2(services, 13, 17, "name=S1")  # Sorry
-func2(services, 8, 9, "c<=1500")  # S2
-
+if __name__ == "__main__":
+    print(func2(services, 15, 17, "c>=800"))  # S3
+    print(func2(services, 11, 13, "r<=4"))  # S3
+    print(func2(services, 10, 12, "name=S3"))  # Sorry
+    print(func2(services, 15, 18, "r>=4.5"))  # S1
+    print(func2(services, 16, 18, "r>=4"))  # Sorry
+    print(func2(services, 13, 17, "name=S1"))  # Sorry
+    print(func2(services, 8, 9, "c<=1500"))  # S2
+    print(func2(services, 8, 9, "c<=1500"))  # S1
+    print(func2(services, 8, 9, "c<=1500"))  # S3
+    print(func2(services, 8, 9, "c<=1500"))  # Sorry
 
 ## Task 3
 print("=== Task 3 ===")
