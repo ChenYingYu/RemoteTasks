@@ -21,9 +21,9 @@ def func1(name):
     data = [
         Person("悟空", 0, Point(0, 0)),
         Person("辛巴", 0, Point(-3, 3)),
-        Person("貝吉塔", 0, Point(-4, -1)),
         Person("特南克斯", 0, Point(1, -2)),
         Person("丁滿", 2, Point(-1, 4)),
+        Person("貝吉塔", 0, Point(-4, -1)),
         Person("弗利沙", 2, Point(4, -1)),
     ]
 
@@ -63,13 +63,13 @@ def func1(name):
             max_distance = distance
 
     # Answer
-    print(f"最遠{farthest_person}；最近{closest_person}")
+    return f"最遠{farthest_person}；最近{closest_person}"
 
 
-func1("辛巴")  # print 最遠弗利沙；最近丁滿、貝吉塔
-func1("悟空")  # print 最遠丁滿、弗利沙；最近特南克斯
-func1("弗利沙")  # print 最遠辛巴，最近特南克斯
-func1("特南克斯")  # print 最遠丁滿，最近悟空
+print(func1("辛巴"))  # print 最遠弗利沙；最近丁滿、貝吉塔
+print(func1("悟空"))  # print 最遠丁滿、弗利沙；最近特南克斯
+print(func1("弗利沙"))  # print 最遠辛巴，最近特南克斯
+print(func1("特南克斯"))  # print 最遠丁滿，最近悟空
 
 
 ## Task 2
