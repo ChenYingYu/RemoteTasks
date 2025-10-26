@@ -75,152 +75,93 @@ print(func1("特南克斯"))  # print 最遠丁滿，最近悟空
 ## Task 2
 print("=== Task 2 ===")
 
+import re, operator
 
 available_slot = {"S1": set(), "S2": set(), "S3": set()}
-available_services = []
 
 
+# book the best match service that fits the criteria and available
 def func2(ss, start, end, criteria):
-    global available_services
-    time_slot = set(range(start, end))
-    available_services = check_availability(time_slot)
-    # check what kind of criteria
-    str_arr = str(criteria).split("=")
-    str_prefix = str_arr[0]
-    str_postfix = str_arr[1]
-    target_service = ""
+    book_time_slot = set(range(start, end))
+    time_available_services = check_time_availability(book_time_slot, ss)
+    formatted_criteria = parse_criteria(criteria)
 
-    if str_prefix[0] == "r":
-        # do rating logic
-        condition = str_prefix[-1]
-        rating_criteria = float(str_postfix)
-        if condition == "<":
-            target_service = find_max_rating_below(rating_criteria)
-        elif condition == ">":
-            target_service = find_min_rating_above(rating_criteria)
+    if formatted_criteria is None:
+        return book(None, book_time_slot)
 
-    elif criteria[0] == "c":
-        # do cost logic
-        condition = str_prefix[-1]
-        cost_criteria = float(str_postfix)
-        if condition == "<":
-            target_service = find_max_cost_below(cost_criteria)
-        elif condition == ">":
-            target_service = find_min_cost_above(cost_criteria)
+    best_service = find_best_match(formatted_criteria, time_available_services)
+    return book(best_service, book_time_slot)
 
-    elif criteria[0] == "n":
-        # do name logic
-        name = str_postfix
-        target_service = find_service(name)
 
-    if target_service != "Sorry":
-        return book(target_service, time_slot)
+def find_best_match(format_criteria, available_services):
+    attribute_key = format_criteria["attribute_key"]
+    operator_symbol = format_criteria["operator_symbol"]
+    criteria_value = format_criteria["criteria_value"]
+
+    qualified_services = [
+        s
+        for s in available_services
+        if OPERATORS[operator_symbol](s.get(attribute_key, 0), criteria_value)
+    ]
+    if not qualified_services:
+        return None
+
+    if operator_symbol != "=":
+        tie_breaker_func = TIE_BREAKER_MAP.get(operator_symbol)
+        best_service = tie_breaker_func(
+            qualified_services, key=lambda s: s.get(attribute_key, 0)
+        )
+        return best_service["name"]
     else:
-        return "Sorry"
+        return qualified_services[0]["name"]
 
 
-def find_max_rating_below(rating_criteria):
-    target_service = "Sorry"  # default none
-    max_rating = None
-
-    for service in services:
-        if service["name"] not in available_services:
-            continue
-        rating = float(service["r"])
-        if rating <= rating_criteria:
-            if max_rating is None:
-                max_rating = rating
-                target_service = service["name"]
-            elif rating > max_rating:
-                max_rating = rating
-                target_service = service["name"]
-
-    return target_service
-
-
-def find_min_rating_above(rating_criteria):
-    target_service = "Sorry"  # default none
-    min_rating = None
-
-    for service in services:
-        if service["name"] not in available_services:
-            continue
-        rating = float(service["r"])
-        if rating >= rating_criteria:
-            if min_rating is None:
-                min_rating = rating
-                target_service = service["name"]
-            elif rating < min_rating:
-                min_rating = rating
-                target_service = service["name"]
-
-    return target_service
-
-
-def find_max_cost_below(cost_criteria):
-    target_service = "Sorry"  # default none
-    max_cost = None
-
-    for service in services:
-        if service["name"] not in available_services:
-            continue
-        cost = float(service["c"])
-        if cost <= cost_criteria:
-            if max_cost is None:
-                max_cost = cost
-                target_service = service["name"]
-            elif cost > max_cost:
-                max_cost = cost
-                target_service = service["name"]
-
-    return target_service
-
-
-def find_min_cost_above(cost_criteria):
-    target_service = "Sorry"  # default none
-    min_cost = None
-
-    for service in services:
-        if service["name"] not in available_services:
-            continue
-        cost = float(service["c"])
-        if cost >= cost_criteria:
-            if min_cost is None:
-                min_cost = cost
-                target_service = service["name"]
-            elif cost < min_cost:
-                min_cost = cost
-                target_service = service["name"]
-
-    return target_service
-
-
-def find_service(name):
-    target_service = "Sorry"  # default none
-    for service in services:
-        if service["name"] not in available_services:
-            continue
-        if name == service["name"]:
-            target_service = service["name"]
-            return target_service
-
-    return target_service
-
-
-def check_availability(time_slot):
-    available_services = []
-    for service in available_slot:
-        if (time_slot & available_slot[service]) == set():
-            available_services.append(service)
-            # print("append")
-            # print(f"available_services {available_services}")
+def check_time_availability(book_time_slot, services):
+    available_services = [
+        s for s in services if (book_time_slot & available_slot[s["name"]]) == set()
+    ]
     return available_services
 
 
 def book(service, time_slot):
-    available_slot[service] |= time_slot
-    return service
 
+    if service is not None:
+        available_slot[service] |= time_slot
+        return service
+    else:
+        return "Sorry"
+
+
+def parse_criteria(criteria):
+    match = re.match(r"([a-z]+)([><]=?|=)([\w.]+)", criteria)
+    if match:
+        attribute_key, operator_symbol, criteria_value = match.groups()
+
+        if attribute_key == "r" or attribute_key == "c":
+            criteria_value = float(criteria_value)
+        return {
+            "attribute_key": attribute_key,
+            "operator_symbol": operator_symbol,
+            "criteria_value": criteria_value,
+        }
+    else:
+        return None
+
+
+TIE_BREAKER_MAP = {
+    ">=": min,
+    "<=": max,
+    ">": min,
+    "<": max,
+}
+
+OPERATORS = {
+    "=": operator.eq,
+    ">=": operator.ge,
+    "<=": operator.le,
+    ">": operator.gt,
+    "<": operator.lt,
+}
 
 services = [
     {"name": "S1", "r": 4.5, "c": 1000},
