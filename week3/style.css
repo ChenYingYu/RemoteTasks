@@ -1,0 +1,282 @@
+:root {
+  --theme-color: rgb(223, 235, 244);
+  --padding: 20px;
+  --gap: 20px;
+}
+
+* {
+  text-align: center;
+  font-size: 20px;
+  align-items: center;
+  font-family: "Times New Roman", Times, serif;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+header {
+  display: flex;
+  padding-left: var(--padding);
+  padding-right: var(--padding);
+}
+
+.header-title {
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+}
+
+li {
+  padding-top: 20px;
+  padding-bottom: 0px;
+}
+
+.burger-icon {
+  font-size: 30px;
+  background-color: transparent;
+  border: 0;
+  opacity: 0.4;
+}
+
+.close-icon {
+  font-size: 30px;
+  background-color: transparent;
+  border: 0;
+  opacity: 0.5;
+}
+
+ul {
+  display: flex;
+  gap: var(--gap);
+  list-style-type: none;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: var(--theme-color);
+  height: 250px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+.promotion-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.promotion {
+  display: flex;
+  background-color: var(--theme-color);
+  gap: 10px;
+  margin: 10px;
+}
+
+.promotion img {
+  width: 80px;
+  height: 50px;
+}
+
+.content {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  background-image: url("./utils/landscape.jpg");
+  background-size: cover;
+  background-position: center center;
+}
+
+.content-grid {
+  margin-top: var(--padding);
+  display: grid;
+  margin: 10px;
+  gap: var(--gap);
+}
+
+.star-icon {
+  position: absolute;
+  font-size: 1.5rem;
+  top: 10px;
+  right: 10px;
+  font-style: normal;
+}
+
+.content-footer {
+  position: absolute;
+  background-color: white;
+  opacity: 0.5;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  margin: 0;
+}
+
+@media (min-width: 361px) {
+  .nav-links {
+    /* position and size */
+    position: fixed;
+    margin-top: 0;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 150px;
+    z-index: 1000;
+    padding: 0;
+
+    /* layout */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+
+    transform: translateX(100%);
+  }
+
+  .burger-icon {
+    display: block;
+  }
+
+  .close-icon {
+    display: block;
+
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 1002;
+  }
+
+  .nav-links.open {
+    transform: translateX(0);
+  }
+
+  .container {
+    max-width: 90%;
+  }
+
+  .promotion1 {
+    width: 100%;
+  }
+
+  .promotion2 {
+    width: 100%;
+  }
+
+  .promotion3 {
+    width: 100%;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 601px) {
+  .nav-links {
+    position: static;
+    height: auto;
+    width: auto;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: row;
+    z-index: auto;
+
+    transform: translateX(0);
+  }
+
+  li {
+    padding: 10px;
+  }
+
+  .burger-icon {
+    display: none;
+  }
+
+  .close-icon {
+    display: none;
+  }
+
+  .container {
+    max-width: 90%;
+  }
+
+  .promotion1 {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  .promotion2 {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  .promotion3 {
+    width: 100%;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .content:nth-child(9),
+  .content:nth-child(10) {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1201px) {
+  .container {
+    width: 100%;
+    max-width: 1200px !important;
+    margin: 0 auto;
+  }
+
+  .promotion1 {
+    width: 100%;
+    flex-basis: 100%;
+    margin: 10px;
+  }
+
+  .promotion2 {
+    width: 780px;
+    margin: 10px;
+  }
+
+  .promotion3 {
+    width: 380px;
+    margin: 10px;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .content:nth-child(1),
+  .content:nth-child(6) {
+    grid-column: span 2;
+  }
+
+  .content:nth-child(2),
+  .content:nth-child(3),
+  .content:nth-child(4),
+  .content:nth-child(5),
+  .content:nth-child(7),
+  .content:nth-child(8),
+  .content:nth-child(9),
+  .content:nth-child(10) {
+    grid-column: span 1;
+  }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="week3.js" defer></script>
+    <title>My Home</title>
+  </head>
+  <header>
+    <div class="header-title">My Website</div>
+
+    <nav>
+      <button class="burger-icon" onclick="toggleMenu()">&#9776</button>
+      <ul class="nav-links">
+        <button class="close-icon" onclick="toggleMenu();">&times;</button>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+        <li>Item 4</li>
+      </ul>
+    </nav>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector(".nav-links");
+            navLinks.classList.toggle("open");
+            console.log(navLinks);
+        }
+    </script>
+  </header>
+  <body>
+    <div class="title">Welcome to MyHome</div>
+
+    <div class="container">
+      <div class="promotion-flex">
+        <div class="promotion promotion1"></div>
+        <div class="promotion promotion2"></div>
+        <div class="promotion promotion3"></div>
+      </div>
+
+      <div class="content-grid">
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 1</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 2</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 3</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 4</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 5</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 6</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 7</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 8</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 9</p>
+        </div>
+        <div class="content">
+          <i class="star-icon">⭐</i>
+          <p class="content-footer">Title 10</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
