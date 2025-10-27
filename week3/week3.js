@@ -17,7 +17,7 @@ async function fetchData() {
     });
 
     promotionSpots.forEach((spot, i) => {
-      var promotionDiv = document.querySelector(`.promotion${i + 1}`);
+      let promotionDiv = document.querySelector(`.promotion${i + 1}`);
       const image = createImageFrom(pictures, spot);
       const textNode = document.createTextNode(spot.sname);
       promotionDiv.appendChild(image);
@@ -28,9 +28,28 @@ async function fetchData() {
     const grid_spots = spots.filter((spot) => {
       return (4 <= spot._id) & (spot._id <= 13);
     });
-    for (const spot of grid_spots) {
-      console.log(spot._id, spot.sname, spot.serial);
-    }
+    let gridDiv = document.querySelector(".content-grid");
+    grid_spots.forEach((spot, i) => {
+      let contentDiv = document.createElement("div");
+      contentDiv.classList.add("content");
+      let icon = document.createElement("i");
+      icon.classList.add("star-icon");
+      icon.textContent = "⭐";
+      let p = document.createElement("p");
+      p.textContent = spot.sname;
+      p.classList.add("content-footer");
+
+      const picturesURL = pictures.find(
+        (picture) => picture.serial === spot.serial
+      );
+      const firstPicURL = picturesURL.pics?.split(".jpg").at(0) + ".jpg";
+      contentDiv.style.backgroundImage = `url(${picHostURL + firstPicURL})`;
+      contentDiv.appendChild(icon);
+      contentDiv.appendChild(p);
+
+      gridDiv.appendChild(contentDiv);
+    });
+
   } catch (error) {
     console.log(error);
   }
@@ -44,7 +63,6 @@ function createImageFrom(pictures, spot) {
   const firstPicURL = picturesURL.pics?.split(".jpg").at(0) + ".jpg";
   image.src = picHostURL + firstPicURL;
   image.alt = spot.sname;
-  console.log(image);
   return image;
 }
 
