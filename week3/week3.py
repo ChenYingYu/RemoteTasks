@@ -40,3 +40,38 @@ with open("hotels.csv", "w", encoding="utf-8", newline="") as file:
         room_count = hotel.get("房間數", "N/A")
 
         writer.writerow([ch_name, en_name, ch_address, en_address, phone, room_count])
+
+
+# Group hotels by district.
+districts = {
+    "中正區": {"hotel_count": 0, "room_count": 0},
+    "萬華區": {"hotel_count": 0, "room_count": 0},
+    "中山區": {"hotel_count": 0, "room_count": 0},
+    "大同區": {"hotel_count": 0, "room_count": 0},
+    "文山區": {"hotel_count": 0, "room_count": 0},
+    "大安區": {"hotel_count": 0, "room_count": 0},
+    "松山區": {"hotel_count": 0, "room_count": 0},
+    "信義區": {"hotel_count": 0, "room_count": 0},
+    "士林區": {"hotel_count": 0, "room_count": 0},
+    "北投區": {"hotel_count": 0, "room_count": 0},
+    "南港區": {"hotel_count": 0, "room_count": 0},
+    "內湖區": {"hotel_count": 0, "room_count": 0},
+}
+
+
+for hotel in merged_hotel_list:
+    for district, value in districts.items():
+        if district in hotel["地址"]:
+            hotel_count = int(districts[district].get("hotel_count", 0)) + 1
+            room_count = int(districts[district].get("room_count", 0)) + int(
+                hotel.get("房間數", 0)
+            )
+
+            districts[district] = {"hotel_count": hotel_count, "room_count": room_count}
+
+# Output how many hotels and rooms are there for each district into districts.csv .
+with open("districts.csv", "w", encoding="utf-8", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["行政區", "旅館總數", "房間總數"])
+    for district, value in districts.items():
+        writer.writerow([district, value["hotel_count"], value["room_count"]])
