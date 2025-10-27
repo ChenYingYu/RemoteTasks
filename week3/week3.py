@@ -27,9 +27,6 @@ for hotel in en_hotel_list:
 # Output one hotel information per line into hotels.csv
 with open("hotels.csv", "w", encoding="utf-8", newline="") as file:
     writer = csv.writer(file)
-    writer.writerow(
-        ["旅宿名稱", "Hotel Name", "地址", "Address", "電話或手機號碼", "房間數"]
-    )
     for hotel in merged_hotel_list:
         # ChineseName,EnglishName,ChineseAddress,EnglishAddress,Phone,RoomCount
         ch_name = hotel.get("旅宿名稱", "N/A")
@@ -72,6 +69,5 @@ for hotel in merged_hotel_list:
 # Output how many hotels and rooms are there for each district into districts.csv .
 with open("districts.csv", "w", encoding="utf-8", newline="") as file:
     writer = csv.writer(file)
-    writer.writerow(["行政區", "旅館總數", "房間總數"])
     for district, value in districts.items():
         writer.writerow([district, value["hotel_count"], value["room_count"]])
