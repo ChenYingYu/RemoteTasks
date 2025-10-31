@@ -20,6 +20,10 @@ function setup(spots, pictureMap) {
   App.contentGrid = document.querySelector(".content-grid");
   const loadMoreButton = document.getElementById("load-more-button");
   App.loadMoreButton = loadMoreButton;
+  if (!spots || spots.length === 0) {
+    App.loadMoreButton.disabled = true;
+    return;
+  }
   loadMoreButton.addEventListener("click", () => {
     loadMore(spots, pictureMap);
   });
@@ -43,6 +47,8 @@ async function fetchData() {
 }
 
 function updateUI(spots, pictureMap) {
+  // clear previous UI
+  if (App.contentGrid) App.contentGrid.innerHTML = "";
   // spots for promotion display (we using flex box here)
   const promotionSpots = spots.filter((spot) => {
     return spot._id <= 3;
@@ -50,8 +56,9 @@ function updateUI(spots, pictureMap) {
 
   promotionSpots.forEach((spot, i) => {
     let promotionDiv = document.querySelector(`.promotion${i + 1}`);
-    const image = createImageFrom(pictureMap, spot);
+    if (promotionDiv) promotionDiv.innerHTML = "";
 
+    const image = createImageFrom(pictureMap, spot);
     const textNode = document.createTextNode(spot.sname);
     promotionDiv.appendChild(image);
     promotionDiv.appendChild(textNode);
