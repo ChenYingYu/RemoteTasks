@@ -70,7 +70,7 @@ function loadMore(spots, pictureMap) {
     p.classList.add("content-footer");
 
     const picturesObj = pictureMap.get(spot.serial);
-    const firstFragment = picturesObj.pics?.split(".jpg")?.[0];
+    const firstFragment = picturesObj?.pics?.split(".jpg")?.[0];
     if (firstFragment) {
       contentDiv.style.backgroundImage = `url(${
         picHostURL + firstFragment + ".jpg"
@@ -90,7 +90,7 @@ function loadMore(spots, pictureMap) {
 function createImageFrom(pictureMap, spot) {
   const image = document.createElement("img");
   const picturesObj = pictureMap.get(spot.serial);
-  const firstFragment = picturesObj.pics?.split(".jpg")?.[0];
+  const firstFragment = picturesObj?.pics?.split(".jpg")?.[0];
   if (firstFragment) {
     image.src = picHostURL + firstFragment + ".jpg";
   } else {
