@@ -1,16 +1,16 @@
-const spotsURL = "https://cwpeng.github.io/test/assignment-3-1";
-const picturesURL = "https://cwpeng.github.io/test/assignment-3-2";
-const picHostURL = "https://www.travel.taipei";
+const SPOTS_URL = "https://cwpeng.github.io/test/assignment-3-1";
+const PICTURES_URL = "https://cwpeng.github.io/test/assignment-3-2";
+const PIC_HOST_URL = "https://www.travel.taipei";
 
 const App = {
-  itemCount: 3,
+  loadedCount: 3,
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const [spots, pictureMap] = await fetchData();
     setup(spots, pictureMap);
-    updateUI(spots, pictureMap);
+    renderUI(spots, pictureMap);
   } catch (error) {
     console.error(error);
   }
@@ -25,16 +25,16 @@ function setup(spots, pictureMap) {
     return;
   }
   loadMoreButton.addEventListener("click", () => {
-    loadMore(spots, pictureMap);
+    renderGridBatch(spots, pictureMap);
   });
 }
 
 async function fetchData() {
   try {
-    const spotsResponse = await fetch(spotsURL);
+    const spotsResponse = await fetch(SPOTS_URL);
     const spotsData = await spotsResponse.json();
     const spots = spotsData.rows;
-    const picturesResponse = await fetch(picturesURL);
+    const picturesResponse = await fetch(PICTURES_URL);
     const picturesData = await picturesResponse.json();
     const pictures = picturesData.rows;
     const pictureMap = new Map(pictures.map((p) => [p.serial, p]));
@@ -46,7 +46,7 @@ async function fetchData() {
   }
 }
 
-function updateUI(spots, pictureMap) {
+function renderUI(spots, pictureMap) {
   // clear previous UI
   if (App.contentGrid) App.contentGrid.innerHTML = "";
   // spots for promotion display (we using flex box here)
@@ -58,21 +58,21 @@ function updateUI(spots, pictureMap) {
     let promotionDiv = document.querySelector(`.promotion${i + 1}`);
     if (promotionDiv) promotionDiv.innerHTML = "";
 
-    const image = createImageFrom(pictureMap, spot);
+    const image = createImageElement(pictureMap, spot);
     const textNode = document.createTextNode(spot.sname);
     promotionDiv.appendChild(image);
     promotionDiv.appendChild(textNode);
   });
 
   // spots for grid display
-  loadMore(spots, pictureMap);
+  renderGridBatch(spots, pictureMap);
 }
 
-function loadMore(spots, pictureMap) {
+function renderGridBatch(spots, pictureMap) {
   // spots for grid display
-  const grid_spots = spots.slice(App.itemCount, App.itemCount + 10);
+  const gridSpots = spots.slice(App.loadedCount, App.loadedCount + 10);
   const fragment = document.createDocumentFragment();
-  grid_spots.forEach((spot, i) => {
+  gridSpots.forEach((spot, i) => {
     let contentDiv = document.createElement("div");
     contentDiv.classList.add("content");
     let icon = document.createElement("i");
@@ -82,11 +82,11 @@ function loadMore(spots, pictureMap) {
     p.textContent = spot.sname;
     p.classList.add("content-footer");
 
-    const picturesObj = pictureMap.get(spot.serial);
-    const firstFragment = picturesObj?.pics?.split(".jpg")?.[0];
-    if (firstFragment) {
+    const pictureRecord = pictureMap.get(spot.serial);
+    const imageFragment = pictureRecord?.pics?.split(".jpg")?.[0];
+    if (imageFragment) {
       contentDiv.style.backgroundImage = `url(${
-        picHostURL + firstFragment + ".jpg"
+        PIC_HOST_URL + imageFragment + ".jpg"
       })`;
     } else {
       contentDiv.style.backgroundImage = "";
@@ -96,17 +96,17 @@ function loadMore(spots, pictureMap) {
 
     fragment.appendChild(contentDiv);
   });
-  App.itemCount += grid_spots.length;
+  App.loadedCount += gridSpots.length;
   App.contentGrid.appendChild(fragment);
-  App.loadMoreButton.disabled = App.itemCount >= spots.length;
+  App.loadMoreButton.disabled = App.loadedCount >= spots.length;
 }
 
-function createImageFrom(pictureMap, spot) {
+function createImageElement(pictureMap, spot) {
   const image = document.createElement("img");
-  const picturesObj = pictureMap.get(spot.serial);
-  const firstFragment = picturesObj?.pics?.split(".jpg")?.[0];
-  if (firstFragment) {
-    image.src = picHostURL + firstFragment + ".jpg";
+  const pictureRecord = pictureMap.get(spot.serial);
+  const imageFragment = pictureRecord?.pics?.split(".jpg")?.[0];
+  if (imageFragment) {
+    image.src = PIC_HOST_URL + imageFragment + ".jpg";
   } else {
     image.src = "";
   }
