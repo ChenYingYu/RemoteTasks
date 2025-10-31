@@ -2,25 +2,22 @@ const spotsURL = "https://cwpeng.github.io/test/assignment-3-1";
 const picturesURL = "https://cwpeng.github.io/test/assignment-3-2";
 const picHostURL = "https://www.travel.taipei";
 
-let spots = [];
-let pictures = [];
-
 let itemCount = 3;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  setup();
   try {
-    [spots, pictures] = await fetchData();
-    updateUI(spots, pictures);
+    const [spots, pictureMap] = await fetchData();
+    setup(spots, pictureMap);
+    updateUI(spots, pictureMap);
   } catch (error) {
     console.error(error);
   }
 });
 
-function setup() {
+function setup(spots, pictureMap) {
   let loadMoreButton = document.getElementById("load-more-button");
   loadMoreButton.addEventListener("click", () => {
-    loadMore(spots, pictures);
+    loadMore(spots, pictureMap);
   });
 }
 
@@ -28,17 +25,18 @@ async function fetchData() {
   try {
     const spotsResponse = await fetch(spotsURL);
     const spotsData = await spotsResponse.json();
-    spots = spotsData.rows;
+    const spots = spotsData.rows;
     const picturesResponse = await fetch(picturesURL);
     const picturesData = await picturesResponse.json();
-    pictures = picturesData.rows;
-    return [spots, pictures];
+    const pictures = picturesData.rows;
+    const pictureMap = new Map(pictures.map((p) => [p.serial, p]));
+    return [spots, pictureMap];
   } catch (error) {
     console.log(error);
   }
 }
 
-function updateUI(spots, pictures) {
+function updateUI(spots, pictureMap) {
   // spots for promotion display (we using flex box here)
   const promotionSpots = spots.filter((spot) => {
     return spot._id <= 3;
@@ -46,17 +44,18 @@ function updateUI(spots, pictures) {
 
   promotionSpots.forEach((spot, i) => {
     let promotionDiv = document.querySelector(`.promotion${i + 1}`);
-    const image = createImageFrom(pictures, spot);
+    const image = createImageFrom(pictureMap, spot);
+
     const textNode = document.createTextNode(spot.sname);
     promotionDiv.appendChild(image);
     promotionDiv.appendChild(textNode);
   });
 
   // spots for grid display
-  loadMore(spots, pictures);
+  loadMore(spots, pictureMap);
 }
 
-function loadMore(spots, pictures) {
+function loadMore(spots, pictureMap) {
   // spots for grid display
   let grid_spots = [];
   let counter = 0;
@@ -76,11 +75,15 @@ function loadMore(spots, pictures) {
     p.textContent = spot.sname;
     p.classList.add("content-footer");
 
-    const picturesURL = pictures.find(
-      (picture) => picture.serial === spot.serial
-    );
-    const firstPicURL = picturesURL.pics?.split(".jpg").at(0) + ".jpg";
-    contentDiv.style.backgroundImage = `url(${picHostURL + firstPicURL})`;
+    const picturesObj = pictureMap.get(spot.serial);
+    const firstFragment = picturesObj.pics?.split(".jpg")?.[0];
+    if (firstFragment) {
+      contentDiv.style.backgroundImage = `url(${
+        picHostURL + firstFragment + ".jpg"
+      })`;
+    } else {
+      contentDiv.style.backgroundImage = "";
+    }
     contentDiv.appendChild(icon);
     contentDiv.appendChild(p);
 
@@ -89,13 +92,16 @@ function loadMore(spots, pictures) {
   itemCount += 10;
 }
 
-function createImageFrom(pictures, spot) {
+function createImageFrom(pictureMap, spot) {
   const image = document.createElement("img");
-  const picturesURL = pictures.find(
-    (picture) => picture.serial === spot.serial
-  );
-  const firstPicURL = picturesURL.pics?.split(".jpg").at(0) + ".jpg";
-  image.src = picHostURL + firstPicURL;
+  const picturesObj = pictureMap.get(spot.serial);
+  const firstFragment = picturesObj.pics?.split(".jpg")?.[0];
+  if (firstFragment) {
+    image.src = picHostURL + firstFragment + ".jpg";
+  } else {
+    image.src = "";
+  }
+
   image.alt = spot.sname;
   return image;
 }
