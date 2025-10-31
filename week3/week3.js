@@ -6,29 +6,6 @@ const App = {
   loadedCount: 3,
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const [spots, pictureMap] = await fetchData();
-    setup(spots, pictureMap);
-    renderUI(spots, pictureMap);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-function setup(spots, pictureMap) {
-  App.contentGrid = document.querySelector(".content-grid");
-  const loadMoreButton = document.getElementById("load-more-button");
-  App.loadMoreButton = loadMoreButton;
-  if (!spots || spots.length === 0) {
-    App.loadMoreButton.disabled = true;
-    return;
-  }
-  loadMoreButton.addEventListener("click", () => {
-    renderGridBatch(spots, pictureMap);
-  });
-}
-
 async function fetchData() {
   try {
     const spotsResponse = await fetch(SPOTS_URL);
@@ -44,6 +21,20 @@ async function fetchData() {
     // fall-safe return to avoid crashing
     return [[], new Map()];
   }
+}
+
+function createImageElement(pictureMap, spot) {
+  const image = document.createElement("img");
+  const pictureRecord = pictureMap.get(spot.serial);
+  const imageFragment = pictureRecord?.pics?.split(".jpg")?.[0];
+  if (imageFragment) {
+    image.src = PIC_HOST_URL + imageFragment + ".jpg";
+  } else {
+    image.src = "";
+  }
+
+  image.alt = spot.sname;
+  return image;
 }
 
 function renderUI(spots, pictureMap) {
@@ -101,16 +92,25 @@ function renderGridBatch(spots, pictureMap) {
   App.loadMoreButton.disabled = App.loadedCount >= spots.length;
 }
 
-function createImageElement(pictureMap, spot) {
-  const image = document.createElement("img");
-  const pictureRecord = pictureMap.get(spot.serial);
-  const imageFragment = pictureRecord?.pics?.split(".jpg")?.[0];
-  if (imageFragment) {
-    image.src = PIC_HOST_URL + imageFragment + ".jpg";
-  } else {
-    image.src = "";
+function setup(spots, pictureMap) {
+  App.contentGrid = document.querySelector(".content-grid");
+  const loadMoreButton = document.getElementById("load-more-button");
+  App.loadMoreButton = loadMoreButton;
+  if (!spots || spots.length === 0) {
+    App.loadMoreButton.disabled = true;
+    return;
   }
-
-  image.alt = spot.sname;
-  return image;
+  loadMoreButton.addEventListener("click", () => {
+    renderGridBatch(spots, pictureMap);
+  });
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const [spots, pictureMap] = await fetchData();
+    setup(spots, pictureMap);
+    renderUI(spots, pictureMap);
+  } catch (error) {
+    console.error(error);
+  }
+});
