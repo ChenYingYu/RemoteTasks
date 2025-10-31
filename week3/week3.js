@@ -58,7 +58,7 @@ function updateUI(spots, pictureMap) {
 function loadMore(spots, pictureMap) {
   // spots for grid display
   let grid_spots = spots.slice(itemCount, itemCount + 10);
-  let gridDiv = document.querySelector(".content-grid");
+  let fragment = document.createDocumentFragment();
   grid_spots.forEach((spot, i) => {
     let contentDiv = document.createElement("div");
     contentDiv.classList.add("content");
@@ -81,8 +81,9 @@ function loadMore(spots, pictureMap) {
     contentDiv.appendChild(icon);
     contentDiv.appendChild(p);
 
-    gridDiv.appendChild(contentDiv);
+    fragment.appendChild(contentDiv);
   });
+  document.querySelector(".content-grid").appendChild(fragment);
   itemCount += grid_spots.length;
 }
 
