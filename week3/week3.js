@@ -2,7 +2,9 @@ const spotsURL = "https://cwpeng.github.io/test/assignment-3-1";
 const picturesURL = "https://cwpeng.github.io/test/assignment-3-2";
 const picHostURL = "https://www.travel.taipei";
 
-let itemCount = 3;
+const App = {
+  itemCount: 3,
+};
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function setup(spots, pictureMap) {
-  let loadMoreButton = document.getElementById("load-more-button");
+  const loadMoreButton = document.getElementById("load-more-button");
   loadMoreButton.addEventListener("click", () => {
     loadMore(spots, pictureMap);
   });
@@ -57,8 +59,8 @@ function updateUI(spots, pictureMap) {
 
 function loadMore(spots, pictureMap) {
   // spots for grid display
-  let grid_spots = spots.slice(itemCount, itemCount + 10);
-  let fragment = document.createDocumentFragment();
+  const grid_spots = spots.slice(App.itemCount, App.itemCount + 10);
+  const fragment = document.createDocumentFragment();
   grid_spots.forEach((spot, i) => {
     let contentDiv = document.createElement("div");
     contentDiv.classList.add("content");
@@ -84,7 +86,7 @@ function loadMore(spots, pictureMap) {
     fragment.appendChild(contentDiv);
   });
   document.querySelector(".content-grid").appendChild(fragment);
-  itemCount += grid_spots.length;
+  App.itemCount += grid_spots.length;
 }
 
 function createImageFrom(pictureMap, spot) {
