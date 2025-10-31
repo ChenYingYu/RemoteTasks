@@ -4,6 +4,7 @@ const PIC_HOST_URL = "https://www.travel.taipei";
 
 const App = {
   loadedCount: 3,
+  batchSize: 10,
 };
 
 async function fetchData() {
@@ -61,7 +62,10 @@ function renderUI(spots, pictureMap) {
 
 function renderGridBatch(spots, pictureMap) {
   // spots for grid display
-  const gridSpots = spots.slice(App.loadedCount, App.loadedCount + 10);
+  const gridSpots = spots.slice(
+    App.loadedCount,
+    App.loadedCount + App.batchSize
+  );
   const fragment = document.createDocumentFragment();
   gridSpots.forEach((spot, i) => {
     let contentDiv = document.createElement("div");
