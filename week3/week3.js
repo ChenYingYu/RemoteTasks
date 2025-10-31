@@ -57,13 +57,7 @@ function updateUI(spots, pictureMap) {
 
 function loadMore(spots, pictureMap) {
   // spots for grid display
-  let grid_spots = [];
-  let counter = 0;
-  for (let i = 0; i < 10; i++) {
-    if (i + itemCount < spots.length) {
-      grid_spots.push(spots[i + itemCount]);
-    }
-  }
+  let grid_spots = spots.slice(itemCount, itemCount + 10);
   let gridDiv = document.querySelector(".content-grid");
   grid_spots.forEach((spot, i) => {
     let contentDiv = document.createElement("div");
@@ -89,7 +83,7 @@ function loadMore(spots, pictureMap) {
 
     gridDiv.appendChild(contentDiv);
   });
-  itemCount += 10;
+  itemCount += grid_spots.length;
 }
 
 function createImageFrom(pictureMap, spot) {
