@@ -17,7 +17,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function setup(spots, pictureMap) {
+  App.contentGrid = document.querySelector(".content-grid");
   const loadMoreButton = document.getElementById("load-more-button");
+  App.loadMoreButton = loadMoreButton;
   loadMoreButton.addEventListener("click", () => {
     loadMore(spots, pictureMap);
   });
@@ -85,8 +87,9 @@ function loadMore(spots, pictureMap) {
 
     fragment.appendChild(contentDiv);
   });
-  document.querySelector(".content-grid").appendChild(fragment);
   App.itemCount += grid_spots.length;
+  App.contentGrid.appendChild(fragment);
+  App.loadMoreButton.disabled = App.itemCount >= spots.length;
 }
 
 function createImageFrom(pictureMap, spot) {
