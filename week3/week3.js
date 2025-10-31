@@ -37,6 +37,8 @@ async function fetchData() {
     return [spots, pictureMap];
   } catch (error) {
     console.log(error);
+    // fall-safe return to avoid crashing
+    return [[], new Map()];
   }
 }
 
