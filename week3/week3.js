@@ -67,7 +67,7 @@ function renderGridBatch(spots, pictureMap) {
     App.loadedCount + App.batchSize
   );
   const fragment = document.createDocumentFragment();
-  gridSpots.forEach((spot, i) => {
+  gridSpots.forEach((spot) => {
     let contentDiv = document.createElement("div");
     contentDiv.classList.add("content");
     let icon = document.createElement("i");
