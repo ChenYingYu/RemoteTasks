@@ -13,3 +13,7 @@ Include all tasks during 1st phase of web training program
 ## week 3
 
 抓取、整理、視覺化資料。
+
+## week 4
+
+使用 Python FastAPI 建立一個簡單的網站前 / 後端系統
