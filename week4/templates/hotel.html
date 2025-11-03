@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel</title>
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet" />
+    <script src="{{ url_for('static', path='/hotel.js') }}" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>旅館的資訊</h1>
+    </header>
+    <main>
+      {% if hotel_info %}
+      <h2>
+        {{ hotel_info["旅宿名稱"] }}、 {{ hotel_info["hotel name"] }}、 {{
+        hotel_info["電話或手機號碼"] }}
+      </h2>
+      {% else %}
+      <h2>查詢不到相關資料</h2>
+      {% endif %}
+      <a href="/">返回首頁</a>
+    </main>
+  </body>
+</html>

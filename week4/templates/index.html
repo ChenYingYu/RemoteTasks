@@ -13,7 +13,7 @@
     </header>
     <main>
       <h2>登入系統</h2>
-      <form action="/login" method="POST">
+      <form action="/login" method="POST" id="member-form">
         <div>
           <label for="email">信箱</label>
           <input type="text" id="email" name="email" />
@@ -30,6 +30,19 @@
           <button type="submit" id="submit">登入</button>
         </div>
       </form>
+      <hr />
+      <div>
+        <h2>取得旅館資訊</h2>
+        <form id="hotel-form">
+          <div>
+            <label for="hotel">編號</label>
+            <input type="text" id="hotel" name="hotel" />
+          </div>
+          <div>
+            <button type="submit">取得</button>
+          </div>
+        </form>
+      </div>
     </main>
   </body>
 </html>
