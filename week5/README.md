@@ -137,3 +137,92 @@ mysql> SELECT * FROM member ORDER BY time DESC LIMIT 3 OFFSET 1;
   ![Task4-4](./img/Task4-4.png)
 
 # Task 5: SQL JOIN
+
+- Create a new table named message , in the website database.
+  
+  ```sql
+  mysql> CREATE TABLE message (
+      -> id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      -> member_id INT UNSIGNED NOT NULL,
+      -> FOREIGN KEY (member_id) REFERENCES member(id),
+      -> content TEXT NOT NULL,
+      -> like_count INT UNSIGNED NOT NULL DEFAULT 0,
+      -> time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);
+  ```
+  
+  ![Task5-1](./img/Task5-1.png)
+
+- SELECT all messages, including sender names. We have to JOIN the member table
+  
+  to get that.
+  
+  ```sql
+  -- I've add a few messages for this task
+  mysql> SELECT
+      ->   message.*,
+      ->   member.name AS sender
+      -> FROM
+      ->   message
+      -> INNER JOIN
+      ->   member
+      -> ON
+      ->   message.member_id=member.id;
+  ```
+  
+  ![Task5-2](./img/Task5-2.png)
+
+- SELECT all messages, including sender names, where sender email equals to
+  
+  test@test.com . We have to JOIN the member table to filter and get that.
+  
+  ```sql
+  mysql> SELECT
+      ->   message.*,
+      ->   member.name AS sender
+      -> FROM
+      ->   message
+      -> INNER JOIN
+      ->   member
+      -> ON 
+      ->   message.member_id=member.id
+      -> WHERE
+      ->   member.email='test@test.com';
+  ```
+  
+  ![Task5-3](./img/Task5-3.png)
+
+- Use SELECT, SQL Aggregation Functions with JOIN statement, get the average like
+  
+  count of messages where sender email equals to test@test.com .
+  
+  ```sql
+  mysql> SELECT avg(test.like_count)
+      -> FROM (
+      -> SELECT like_count FROM message
+      -> INNER JOIN member
+      -> ON message.member_id=member.id
+      -> WHERE member.email='test@test.com')
+      -> AS test;
+  ```
+  
+  ![Task5-4](./img/Task5-4.png)
+
+- Use SELECT, SQL Aggregation Functions with JOIN statement, get the average like
+  
+  count of messages GROUP BY sender email.
+  
+  ```sql
+  mysql> SELECT
+      ->   member.email,
+      ->   avg(message.like_count)
+      -> FROM
+      ->   message
+      -> INNER JOIN
+      ->   member
+      -> ON
+      ->   message.member_id=member.id
+      -> GROUP BY
+      ->   member.email;
+  ```
+  
+  ![Task5-5](./img/Task5-5.png)
