@@ -99,4 +99,41 @@ mysql> SELECT * FROM member ORDER BY time DESC LIMIT 3 OFFSET 1;
 
 # Task 4: SQL Aggregation Functions
 
+- SELECT how many rows from the member table.
+  
+  ```sql
+  mysql> SELECT COUNT(*) FROM member;
+  ```
+  
+  ![Task4-1](./img/Task4-1.png)
+
+- SELECT the sum of follower count of all the rows from the member table.
+  
+  ```sql
+  -- I've updated follower_count of a few members for this task.
+  mysql> SELECT sum(follower_count) FROM member;
+  ```
+  
+  ![Task4-2](./img/Task4-2.png)
+
+- SELECT the average of follower_count of all the rows from the member table.
+  
+  ```sql
+  mysql> SELECT avg(follower_count) FROM member;
+  ```
+  
+  ![Task4-3](./img/Task4-3.png)
+
+- SELECT the average of follower_count of the first 2 rows, in descending order of follower_count, from the member table.
+  
+  ```sql
+  mysql> SELECT avg(first_two.follower_count)
+      -> FROM (
+      -> SELECT * FROM member
+      -> ORDER BY follower_count DESC LIMIT 2) 
+      -> AS first_two;
+  ```
+  
+  ![Task4-4](./img/Task4-4.png)
+
 # Task 5: SQL JOIN
