@@ -17,3 +17,7 @@ Include all tasks during 1st phase of web training program
 ## week 4
 
 使用 Python FastAPI 建立一個簡單的網站前 / 後端系統
+
+## week 5
+
+使用 Command Line 終端機介面，進行基本的 MySQL 資料庫操作以及 SQL 的各種用法
