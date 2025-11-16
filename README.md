@@ -21,3 +21,7 @@ Include all tasks during 1st phase of web training program
 ## week 5
 
 使用 Command Line 終端機介面，進行基本的 MySQL 資料庫操作以及 SQL 的各種用法
+
+## week 6
+
+整合前端、後端、資料庫，完成會員和留言系統
