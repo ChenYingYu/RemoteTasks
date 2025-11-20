@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>歡迎光臨，請註冊登入系統</h1>
+    </header>
+    <main>
+      <h2>註冊帳號</h2>
+      <form id="signup">
+        <div>
+          <label for="name">姓名</label>
+          <input type="text" id="name" name="name" />
+        </div>
+        <div>
+          <label for="email">信箱</label>
+          <input type="text" id="email" name="email" />
+        </div>
+        <div>
+          <label for="password">密碼</label>
+          <input type="password" id="password" name="password" />
+        </div>
+        <div>
+          <button type="submit" id="signup">註冊</button>
+        </div>
+      </form>
+      <hr />
+      <form id="login">
+        <h2>登入系統</h2>
+        <div>
+          <label for="email">信箱</label>
+          <input type="text" id="email" name="email" />
+        </div>
+        <div>
+          <label for="password">密碼</label>
+          <input type="password" id="password" name="password" />
+        </div>
+        <div>
+          <button type="submit" id="login">登入</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>
