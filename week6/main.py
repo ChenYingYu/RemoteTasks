@@ -107,7 +107,35 @@ async def logout(request: Request):
 async def member_page(request: Request):
     if "LOGGED-IN" not in request.session or not request.session["LOGGED-IN"]:
         return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
-    return templates.TemplateResponse("member.html", {"request": request})
+    messages = get_messages_from_db()
+    return templates.TemplateResponse(
+        "member.html", {"request": request, "messages": messages}
+    )
+
+
+def get_messages_from_db():
+    db = get_website_db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT message.id, member.id as member_id, member.name, message.content FROM message INNER JOIN member ON message.member_id = member.id ORDER BY message.id DESC;"
+    )
+    messages = cursor.fetchall()
+    db.close()
+    return messages
+
+
+@app.post("/createMessage")
+async def create_message(request: Request, message_content: Annotated[str, Form()]):
+    member_id = request.session["LOGGED-IN"]["user_id"]
+    db = get_website_db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        "INSERT INTO message (member_id, content) VALUES (%s, %s);",
+        (member_id, message_content),
+    )
+    db.commit()
+    db.close()
+    return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
 
 
 @app.get("/ohoh", response_class=HTMLResponse)
