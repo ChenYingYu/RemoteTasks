@@ -88,7 +88,7 @@ async def login(
         request.session["LOGGED-IN"] = {
             "user_name": user["name"],
             "user_email": user["email"],
-            "user_id": str(user["id"]),
+            "user_id": int(user["id"]),
         }
         return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
     else:
@@ -136,6 +136,19 @@ async def create_message(request: Request, message_content: Annotated[str, Form(
     db.commit()
     db.close()
     return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.delete("/deleteMessage/{message_id}")
+async def delete_message(request: Request, message_id: int):
+    member_id = request.session["LOGGED-IN"]["user_id"]
+    db = get_website_db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        "DELETE FROM message WHERE id=%s AND member_id=%s;", (message_id, member_id)
+    )
+    db.commit()
+    db.close()
+    return {"ok": True}
 
 
 @app.get("/ohoh", response_class=HTMLResponse)

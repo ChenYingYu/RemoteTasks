@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Member</title>
     <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet" />
+    <script src="{{ url_for('static', path='/member.js') }}" defer></script>
   </head>
   <body>
     <header>
@@ -32,6 +33,9 @@
           {% for msg in messages %}
           <li>
             <strong>{{ msg.name }}</strong>: <span style="font-weight: normal;">{{ msg.content }}</span>
+            {% if msg.member_id == request.session["LOGGED-IN"].user_id %}
+            <button class="delete-button" message-id="{{ msg.id }}">X</button>
+            {% endif %}
           </li>
           {% endfor %}
         </ul>
