@@ -11,7 +11,7 @@
       <h1>歡迎光臨，這是會員頁</h1>
     </header>
     <main>
-      <h2>使用者，歡迎登入系統<h2>
+      <h2>{{ request.session["LOGGED-IN"]["user_name"] }}，歡迎登入系統<h2>
       <a>登出系統</a>
     </main>
   </body>

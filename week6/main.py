@@ -12,14 +12,20 @@ from fastapi.responses import RedirectResponse
 import os
 import mysql.connector
 
+# Task 3
+from starlette.middleware.sessions import SessionMiddleware
+import secrets
+
 load_dotenv()
 
 
 mysql_user = os.getenv("MYSQL_USER")
 mysql_password = os.getenv("MYSQL_PASSWORD")
 
+secret_key = secrets.token_urlsafe(32)
 
 app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key=secret_key)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
@@ -61,6 +67,34 @@ async def signup(
     db.commit()
     db.close()
     return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.post("/login")
+async def login(
+    request: Request,
+    login_email: Annotated[str, Form()],
+    login_password: Annotated[str, Form()],
+):
+    db = get_website_db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT * FROM member WHERE email=%s AND password=%s;",
+        (login_email, login_password),
+    )
+    user = cursor.fetchone()  # type: ignore
+    db.close()
+
+    if user:
+        request.session["LOGGED-IN"] = {
+            "user_name": user["name"],
+            "user_email": user["email"],
+            "user_id": str(user["id"]),
+        }
+        return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
+    else:
+        return RedirectResponse(
+            url="/ohoh?msg=電子郵件或密碼錯誤", status_code=status.HTTP_303_SEE_OTHER
+        )
 
 
 @app.get("/member", response_class=HTMLResponse)
