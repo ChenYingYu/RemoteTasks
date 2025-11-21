@@ -97,8 +97,16 @@ async def login(
         )
 
 
+@app.get("/logout", response_class=HTMLResponse)
+async def logout(request: Request):
+    request.session["LOGGED-IN"] = False
+    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+
 @app.get("/member", response_class=HTMLResponse)
 async def member_page(request: Request):
+    if "LOGGED-IN" not in request.session or not request.session["LOGGED-IN"]:
+        return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
     return templates.TemplateResponse("member.html", {"request": request})
 
 
