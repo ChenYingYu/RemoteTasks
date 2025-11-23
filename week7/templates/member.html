@@ -15,6 +15,13 @@
       <h2>{{ request.session["LOGGED-IN"]["user_name"] }}，歡迎登入系統<h2>
       <a href="/logout">登出系統</a>
       <hr />
+      <h2>查詢會員姓名</h2>
+       <div>
+        <input type="text" id="search-id" required />
+        <button id="search-button">查詢</button>
+        <div id="search-result"></div>
+       </div>
+      <hr />
       <div>
         <h2>快來留言吧</h2>
         <form action="/createMessage" method="POST" id="message-form">
