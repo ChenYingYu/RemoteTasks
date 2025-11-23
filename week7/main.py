@@ -112,6 +112,27 @@ async def member_page(request: Request):
     )
 
 
+@app.get("/api/member/{member_id}")
+async def get_member_info(request: Request, member_id: int):
+    if "LOGGED-IN" not in request.session or not request.session["LOGGED-IN"]:
+        return {"data": None}
+    db = get_website_db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM member WHERE id=%s;", (member_id,))
+    member = cursor.fetchone()
+    db.close()
+    if member:
+        return {
+            "data": {
+                "id": member["id"],
+                "name": member["name"],
+                "email": member["email"],
+            }
+        }
+    else:
+        return {"data": None}
+
+
 def get_messages_from_db():
     db = get_website_db_connection()
     cursor = db.cursor(dictionary=True)
