@@ -25,3 +25,7 @@ Include all tasks during 1st phase of web training program
 ## week 6
 
 整合前端、後端、資料庫，完成會員和留言系統
+
+## week 7
+
+使用前後端分離的設計，完成一些額外的會員功能
