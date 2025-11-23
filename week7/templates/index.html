@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>歡迎光臨，請註冊登入系統</h1>
+    </header>
+    <main>
+      <h2>註冊帳號</h2>
+      <form action="/signup" method="POST" id="signup-form">
+        <div>
+          <label for="signup-username">姓名</label>
+          <input type="text" id="signup-username" name="signup_name" required />
+        </div>
+        <div>
+          <label for="signup-email">信箱</label>
+          <input type="text" id="signup-email" name="signup_email" required />
+        </div>
+        <div>
+          <label for="signup-password">密碼</label>
+          <input
+            type="password"
+            id="signup-password"
+            name="signup_password"
+            required
+          />
+        </div>
+        <div>
+          <button type="submit" id="signup-button">註冊</button>
+        </div>
+      </form>
+      <hr />
+      <form action="/login" method="POST" id="login-form">
+        <h2>登入系統</h2>
+        <div>
+          <label for="login-email">信箱</label>
+          <input type="text" id="login-email" name="login_email" required />
+        </div>
+        <div>
+          <label for="login-password">密碼</label>
+          <input type="password" id="login-password" name="login_password" required />
+        </div>
+        <div>
+          <button type="submit" id="login-button">登入</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>
