@@ -30,3 +30,30 @@ document.getElementById("search-button").addEventListener("click", async () => {
     }
   }
 });
+
+document.getElementById("update-button").addEventListener("click", async () => {
+  const newName = document.getElementById("update-name").value.trim();
+  if (newName) {
+    const response = await fetch("/api/member", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: newName }),
+    });
+    const resultDiv = document.getElementById("update-result");
+    if (response.ok) {
+      const data = await response.json();
+      if (data.ok) {
+        resultDiv.innerHTML = `<p>更新成功</p>`;
+        document.getElementById(
+          "welcome-message"
+        ).innerText = `${newName}，歡迎登入系統`;
+      } else {
+        resultDiv.innerHTML = `<p>更新失敗</p>`;
+      }
+    } else {
+      resultDiv.innerHTML = `<p>更新失敗</p>`;
+    }
+  }
+});

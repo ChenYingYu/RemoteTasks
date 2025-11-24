@@ -133,6 +133,25 @@ async def get_member_info(request: Request, member_id: int):
         return {"data": None}
 
 
+@app.patch("/api/member")
+async def update_member_name(request: Request):
+    if "LOGGED-IN" not in request.session or not request.session["LOGGED-IN"]:
+        return {"error": True}
+    try:
+        body = await request.json()
+        new_name = body.get("name")
+        member_id = request.session["LOGGED-IN"]["user_id"]
+        db = get_website_db_connection()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("UPDATE member SET name=%s WHERE id=%s;", (new_name, member_id))
+        db.commit()
+        db.close()
+        request.session["LOGGED-IN"]["user_name"] = new_name
+    except:
+        return {"error": True}
+    return {"ok": True}
+
+
 def get_messages_from_db():
     db = get_website_db_connection()
     cursor = db.cursor(dictionary=True)
