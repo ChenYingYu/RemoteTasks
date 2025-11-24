@@ -42,3 +42,25 @@ document.getElementById("update-button").addEventListener("click", async () => {
     }
   }
 });
+
+document
+  .getElementById("load-logs-button")
+  .addEventListener("click", async () => {
+    const response = await fetch("/api/query-logs");
+    const logsDiv = document.getElementById("query-logs");
+    if (response.ok) {
+      const data = await response.json();
+      logsDiv.innerHTML = "";
+      if (data.data && data.data.length > 0) {
+        console.log(data.data);
+        data.data.forEach((log) => {
+          const logEntry = document.createElement("p");
+          const formatTime = new Date(log.time);
+          logEntry.innerText = `${
+            log.searcher_name
+          } (${formatTime.toLocaleString("sv")})`; // present date in YYYY-MM-DD hh:mm:ss format
+          logsDiv.appendChild(logEntry);
+        });
+      }
+    }
+  });

@@ -120,8 +120,15 @@ async def get_member_info(request: Request, member_id: int):
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM member WHERE id=%s;", (member_id,))
     member = cursor.fetchone()
-    db.close()
     if member:
+        searcher_id = request.session["LOGGED-IN"]["user_id"]
+        if searcher_id != member_id:
+            cursor.execute(
+                "INSERT INTO query_logs (searcher_id, target_id) VALUES (%s, %s);",
+                (searcher_id, member_id),
+            )
+            db.commit()
+        db.close()
         return {
             "data": {
                 "id": member["id"],
@@ -130,7 +137,30 @@ async def get_member_info(request: Request, member_id: int):
             }
         }
     else:
+        db.close()
         return {"data": None}
+
+
+@app.get("/api/query-logs")
+async def get_query_logs(request: Request):
+    if "LOGGED-IN" not in request.session or not request.session["LOGGED-IN"]:
+        return {"data": None}
+    db = get_website_db_connection()
+    cursor = db.cursor(dictionary=True)
+    # use target_id to select the latest 10 query log to get searcher_id and time
+    # and then use searcher_id to get searcher name from member table
+    target_id = request.session["LOGGED-IN"]["user_id"]
+    cursor.execute(
+        """SELECT query_logs.searcher_id, member.name as searcher_name, query_logs.time 
+        FROM query_logs INNER JOIN member ON query_logs.searcher_id = member.id
+        WHERE query_logs.target_id = %s
+        ORDER BY query_logs.time DESC
+        LIMIT 10;""",
+        (target_id,),
+    )
+    logs = cursor.fetchall()
+    db.close()
+    return {"data": logs}
 
 
 @app.patch("/api/member")
